@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEditor.Build.Content;
 using UnityEngine;
 
-/* This script's purpose is to provide a temporary bait behavior so I could
- * program the fish and someone can just swap the code later on.
+/* look at me
+ * im the actual bait script now
  */
 
-public class DummyBait : MonoBehaviour
+public class Bait : MonoBehaviour
 {
     // Enums
     // NOTE: These states may be necessary in order to access the bait data easily
     // Idea: Setters-getters in order to preserve OOP? I don't got time to think about that.
     public enum BaitState
     {
-        Released,
-        Cast,
-        FishCaught
+        Released, // Not yet cast, should not be on the pond
+        Cast, // Casted, should be on the pond
+        FishCaught // Caught a fish, should be on the pond
     };
 
     [SerializeField] public BaitState currState;
@@ -30,5 +30,14 @@ public class DummyBait : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider obj)
+    {
+        // yes this works even through all my test cases
+        if(obj.CompareTag("Fish") && this.currState == BaitState.Cast) {
+            obj.GetComponent<Fish>().gotCaught();
+            this.currState = BaitState.FishCaught;
+        }
     }
 }
