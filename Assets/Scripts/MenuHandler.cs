@@ -19,6 +19,7 @@ public class MenuHandler : MonoBehaviour
         pondUI.SetActive(false);
         album.SetActive(false);
         ThrowReelHandler.SetActive(false);
+        scanMessage.SetActive(false);
     }
 
     public void OnPlay()

@@ -30876,7 +30876,7 @@ GameObject:
   - component: {fileID: 563885684}
   - component: {fileID: 563885683}
   m_Layer: 0
-  m_Name: ScanMessage
+  m_Name: TargetMissing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
