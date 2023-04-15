@@ -9,6 +9,8 @@ public class MenuHandler : MonoBehaviour
     [SerializeField] private GameObject album;
     [SerializeField] private GameObject scanMessage;
     [SerializeField] private GameObject pondOne;
+    [SerializeField] private GameObject ThrowReelHandler;
+
     bool inPond = false;
 
     void Start()
@@ -16,6 +18,7 @@ public class MenuHandler : MonoBehaviour
         menu.SetActive(true);
         pondUI.SetActive(false);
         album.SetActive(false);
+        ThrowReelHandler.SetActive(false);
     }
 
     public void OnPlay()
@@ -41,6 +44,7 @@ public class MenuHandler : MonoBehaviour
     {
         pondUI.SetActive(false);
         pondOne.SetActive(false);
+        ThrowReelHandler.SetActive(false);
 
         menu.SetActive(true);
         inPond = false;
@@ -59,6 +63,7 @@ public class MenuHandler : MonoBehaviour
         {
             pondUI.SetActive(true);
             pondOne.SetActive(true);
+            ThrowReelHandler.SetActive(true);
         }
     }
 
@@ -66,5 +71,6 @@ public class MenuHandler : MonoBehaviour
     {
         scanMessage.SetActive(true);
         pondUI.SetActive(false);
+        ThrowReelHandler.SetActive(false);
     }
 }
