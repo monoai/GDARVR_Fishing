@@ -5,20 +5,24 @@ using UnityEngine;
 public class MenuHandler : MonoBehaviour
 {
     [SerializeField] private GameObject menu;
-    [SerializeField] private GameObject pond;
+    [SerializeField] private GameObject pondUI;
     [SerializeField] private GameObject album;
+    [SerializeField] private GameObject scanMessage;
+    [SerializeField] private GameObject pondOne;
+    bool inPond = false;
 
     void Start()
     {
         menu.SetActive(true);
-        pond.SetActive(false);
+        pondUI.SetActive(false);
         album.SetActive(false);
     }
 
     public void OnPlay()
     {
         menu.SetActive(false);
-        pond.SetActive(true);
+        scanMessage.SetActive(true);
+        inPond = true;
     }
 
     public void OnAlbum()
@@ -35,12 +39,32 @@ public class MenuHandler : MonoBehaviour
 
     public void OnQuit()
     {
-        pond.SetActive(false);
+        pondUI.SetActive(false);
+        pondOne.SetActive(false);
+
         menu.SetActive(true);
+        inPond = false;
     }
 
     public void OnExit()
     {
         Application.Quit();
+    }
+
+    public void OnPondMarkerFound()
+    {
+        scanMessage.SetActive(false);
+
+        if (inPond)
+        {
+            pondUI.SetActive(true);
+            pondOne.SetActive(true);
+        }
+    }
+
+    public void OnPondMarkerLost()
+    {
+        scanMessage.SetActive(true);
+        pondUI.SetActive(false);
     }
 }
