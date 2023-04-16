@@ -38,7 +38,7 @@ public class Bait : MonoBehaviour
     private void OnTriggerEnter(Collider obj)
     {
         // yes this works even through all my test cases
-        if(obj.CompareTag("Fish") && this.currState == BaitState.Cast) {
+        if(obj.CompareTag("Fish") && obj.GetComponent<Fish>().isScared != true && this.currState == BaitState.Cast) {
             obj.GetComponent<Fish>().gotCaught();
             this.currState = BaitState.FishCaught;
             caughtFish = obj.GetComponent<Fish>();

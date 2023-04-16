@@ -24,10 +24,12 @@ public class Fish : MonoBehaviour
     [Header("Fish Data")]
     [SerializeField] private FishType currType;
     [SerializeField] private bool isCaught = false;
+    [SerializeField] public bool isScared = false;
     [SerializeField] private float interest = 0.0f;
     [SerializeField] private float speed = 0.25f;
     private Vector3 destination = new Vector3(0.0f,0.0f,0.0f);
     private GameObject referenceSphere;
+    private float scareTick = 0.0f;
 
     [Header("Fish Information")]
     [SerializeField] private int fishValue = 0;
@@ -81,6 +83,14 @@ public class Fish : MonoBehaviour
         var baitstate = bait.GetComponent<Bait>();
 
         // If caught, place the behavior here
+        if(isScared)
+        {
+            if (scareTick >= 10.0f) { 
+                isScared = false;
+                scareTick = 0.0f;
+            }
+            scareTick += Time.deltaTime;
+        }
 
         // Being caught is highest priority
         if (baitstate.currState == Bait.BaitState.FishCaught && this.isCaught == true)
@@ -160,6 +170,7 @@ public class Fish : MonoBehaviour
     public void gotReleased()
     {
         isCaught = false;
-        interest = 0.0f;
+        isScared = true;
+        interest -= 50.0f;
     }
 }
