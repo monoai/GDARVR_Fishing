@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Apple;
 using Vuforia;
 
 public class Fish : MonoBehaviour
@@ -25,6 +26,7 @@ public class Fish : MonoBehaviour
     [SerializeField] private bool isCaught = false;
     [SerializeField] private float interest = 0.0f;
     [SerializeField] private float speed = 1.0f;
+    private Vector3 destination = new Vector3(0.0f,0.0f,0.0f);
 
     [Header("Fish Information")]
     [SerializeField] private int fishValue = 0;
@@ -86,10 +88,7 @@ public class Fish : MonoBehaviour
             {
                 Debug.Log(this.name + "is looking for the bait");
                 // Move towards the bait behavior
-                Vector3 rotDir = Vector3.RotateTowards(transform.forward, bait.transform.position - transform.position, Time.deltaTime * this.speed * 2.5f, 0.0f);
-                //Debug.DrawRay(transform.position, rotDir, Color.red);
-                transform.position = Vector3.MoveTowards(transform.position, bait.transform.position, Time.deltaTime * this.speed);
-                transform.rotation = Quaternion.LookRotation(rotDir);
+                move(bait.transform.position);
             }
             // If the bait is cast, no one is caught, and interest is >= 100
             else if (baitstate.currState == Bait.BaitState.Cast && baitstate.currState != Bait.BaitState.FishCaught && this.interest < 100.0f)
@@ -122,9 +121,30 @@ public class Fish : MonoBehaviour
                  *      moveTowards currDestination
                  *      rotTowards currDestination
                  */
-                //transform.Translate((Random.insideUnitCircle * this.radius) * Time.deltaTime);
+                if (destination == Vector3.zero || Vector3.Distance(destination, transform.position) <= 0.1f)
+                {
+                    Debug.Log(this.name + "should be looking for another place");
+                    changeDestination();
+                } else {
+                    move(destination);
+                }
+                //Vector3 pos = new Vector3(1.0f, 1.0f, 0.0f);
+                //transform.position += pos; position of the pond if needed
+                //transform.position = (Random.insideUnitCircle * 5.0f);
+                //transform.position = new Vector3(transform.position.x, 0.0f, transform.position.y);
             }
         }
+    }
+
+    private void move(Vector3 target) {
+        Vector3 rotDir = Vector3.RotateTowards(transform.forward, target - transform.position, Time.deltaTime * this.speed * 2.5f, 0.0f);
+        //Debug.DrawRay(transform.position, rotDir, Color.red);
+        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * this.speed);
+        transform.rotation = Quaternion.LookRotation(rotDir);
+    }
+    private void changeDestination() {
+        destination = Random.insideUnitCircle * 5.0f;
+        destination = new Vector3(destination.x, 0.0f, destination.y);
     }
 
     public void gotCaught() {
