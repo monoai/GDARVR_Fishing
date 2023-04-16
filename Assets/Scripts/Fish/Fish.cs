@@ -83,6 +83,13 @@ public class Fish : MonoBehaviour
         }
         else
         {
+            // decide destination once destination has been reached
+            if (destination == Vector3.zero || Vector3.Distance(destination, transform.position) <= 0.1f)
+            {
+                Debug.Log(this.name + "should be looking for another place");
+                changeDestination();
+            }
+
             // If the bait is cast, no one is caught, and interest is < 100 then second priority
             if (baitstate.currState == Bait.BaitState.Cast && baitstate.currState != Bait.BaitState.FishCaught && this.interest >= 100.0f)
             {
@@ -103,37 +110,31 @@ public class Fish : MonoBehaviour
                  *      interest += 0.25
                  * 
                  */
-                interest += 1.0f;
+                if (Vector3.Distance(bait.transform.position, transform.position) < 1.5) {
+                    interest += 0.05f;
+                } else if (Vector3.Distance(bait.transform.position, transform.position) < 2.5) {
+                    interest += 0.025f;
+                } else {
+                    interest += 0.005f;
+                }
+                //interest += 1.0f;
+                move(destination);
             }
             // else, assume default behavior of nothing and then swim around
             else
             {
                 Debug.Log(this.name + "is just hanging around");
                 // Random move Behavior
+                move(destination);
 
-                /* note to mono: make sure to check the limitations of unit circle
-                 * note to shiro and kuro: check if you guys could refactor the movement of the fish so we could just reuse the code
-                 * note etc: as you can see, we can use currDestination for the bait maaaaybe?
-                 * if(distance of transform.position < currDestination)
-                 *      changeDestination();
-                 *      something else
-                 * else
-                 *      moveTowards currDestination
-                 *      rotTowards currDestination
-                 */
-                if (destination == Vector3.zero || Vector3.Distance(destination, transform.position) <= 0.1f)
-                {
-                    Debug.Log(this.name + "should be looking for another place");
-                    changeDestination();
-                } else {
-                    move(destination);
-                }
+                // Old remnant that might be useful for the pond
                 //Vector3 pos = new Vector3(1.0f, 1.0f, 0.0f);
                 //transform.position += pos; position of the pond if needed
                 //transform.position = (Random.insideUnitCircle * 5.0f);
                 //transform.position = new Vector3(transform.position.x, 0.0f, transform.position.y);
             }
         }
+        Debug.Log(this.name + "'s distance to bait is " + Vector3.Distance(bait.transform.position, transform.position));
     }
 
     private void move(Vector3 target) {
