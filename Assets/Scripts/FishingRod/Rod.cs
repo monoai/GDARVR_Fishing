@@ -8,6 +8,7 @@ public class Rod : MonoBehaviour
     [SerializeField] private GameObject baitRef;
     public GameObject bait;
     public GameObject marker;
+    public Transform WaterPlane;
 
     public bool isMarkerNull = true;
     public bool isMarkerSet = false;
@@ -41,6 +42,7 @@ public class Rod : MonoBehaviour
         else if (isMarkerSet && !isBaitCast && rodHandler.isThrown)
         {
             bait = Instantiate(baitRef, marker.transform.position, Quaternion.identity);
+            
             marker.SetActive(false);
             isBaitCast = true;
         }
@@ -58,6 +60,7 @@ public class Rod : MonoBehaviour
         else if (isMarkerSet && !isBaitCast)
         {
             bait = Instantiate(baitRef, marker.transform.position, Quaternion.identity);
+            bait.transform.SetParent(WaterPlane);
             marker.SetActive(false);
             isBaitCast = true;
         }
