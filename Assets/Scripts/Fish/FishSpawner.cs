@@ -9,6 +9,7 @@ public class FishSpawner : MonoBehaviour
     Vector3 PlaneSize;
     [SerializeField] private float SpawnTimer = 10.0f;
     [SerializeField] private Fish fishRef;
+    [SerializeField] private GameObject baitRef;
     //public List<Fish> fishList;
     private bool canSpawn = true;
 
@@ -31,6 +32,7 @@ public class FishSpawner : MonoBehaviour
     IEnumerator SpawnFish(){
         Debug.Log("Spawning Fish");
         Fish temp = Instantiate(fishRef, WaterPlane);
+        temp.bait = baitRef;
         temp.transform.localPosition = new Vector3(Random.Range(0, 5), 0.0f,Random.Range(-5.0f, 0));
         temp.gameObject.SetActive(true);
         canSpawn = false;

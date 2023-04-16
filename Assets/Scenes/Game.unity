@@ -74621,6 +74621,7 @@ MonoBehaviour:
   WaterPlane: {fileID: 1925437607}
   SpawnTimer: 10
   fishRef: {fileID: 1724246512227528754, guid: 824f57874ec0d9e4eb8773fb84ff678c, type: 3}
+  baitRef: {fileID: 1923080602}
 --- !u!1 &1352196536
 GameObject:
   m_ObjectHideFlags: 0
@@ -79818,7 +79819,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26192
+  m_Name: pb_Mesh143016
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -110972,7 +110973,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24646
+  m_Name: pb_Mesh141468
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

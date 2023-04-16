@@ -38,7 +38,7 @@ public class Fish : MonoBehaviour
     // then why not instantiate new bait?
     // COUNTER-POINT: New bait means existing fish loses reference, and instantiating is costly
     // It seems wiser to let new fish find the reference rather than ALL fishes losing all references.
-    [SerializeField] private GameObject bait;
+    public GameObject bait;
 
 
     // Start is called before the first frame update
@@ -150,6 +150,12 @@ public class Fish : MonoBehaviour
 
     public void gotCaught() {
         isCaught = true;
+        interest = 0.0f;
+    }
+
+    public void gotReleased()
+    {
+        isCaught = false;
         interest = 0.0f;
     }
 }

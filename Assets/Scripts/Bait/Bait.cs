@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class Bait : MonoBehaviour
 {
+    public Fish caughtFish;
+    
     // Enums
     // NOTE: These states may be necessary in order to access the bait data easily
     // Idea: Setters-getters in order to preserve OOP? I don't got time to think about that.
@@ -16,7 +18,8 @@ public class Bait : MonoBehaviour
     {
         Released, // Not yet cast, should not be on the pond
         Cast, // Casted, should be on the pond
-        FishCaught // Caught a fish, should be on the pond
+        FishCaught, // Caught a fish, should be on the pond
+        Succeed
     };
 
     [SerializeField] public BaitState currState;
@@ -38,6 +41,7 @@ public class Bait : MonoBehaviour
         if(obj.CompareTag("Fish") && this.currState == BaitState.Cast) {
             obj.GetComponent<Fish>().gotCaught();
             this.currState = BaitState.FishCaught;
+            caughtFish = obj.GetComponent<Fish>();
         }
     }
 }
