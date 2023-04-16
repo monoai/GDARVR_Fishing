@@ -12,19 +12,21 @@ public class Rod : MonoBehaviour
     public bool isMarkerSet = false;
     bool captureFish = false;
 
-
     private float caught_ticks = 0;
     private float reel_ticks = 0;
 
     private float caught_INTERVAL = 5.0f;
     private float reel_INTERVAL = 3.0f;
 
-    MeshRenderer meshRenderer;
+    MeshRenderer markerMeshRenderer;
+    MeshRenderer baitMeshRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
-        meshRenderer = marker.GetComponent<MeshRenderer>();
+        markerMeshRenderer = marker.GetComponent<MeshRenderer>();
+        baitMeshRenderer = bait.GetComponent<MeshRenderer>();
+        baitMeshRenderer.sharedMaterial.color = Color.white;
         bait.currState = Bait.BaitState.Released;
     }
 
@@ -42,6 +44,7 @@ public class Rod : MonoBehaviour
             {
                 caught_ticks = 0;
                 bait.caughtFish.gotReleased();
+                baitMeshRenderer.sharedMaterial.color = Color.white;
                 bait.currState = Bait.BaitState.Cast;
                 // Lost Fish!!
             }
@@ -49,28 +52,40 @@ public class Rod : MonoBehaviour
             if (Input.GetMouseButton(1))
             {
                 reel_ticks += Time.deltaTime;
+                baitMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
                 if (captureFish)
                 {
-                    bait.currState = Bait.BaitState.Succeed;
+                    baitMeshRenderer.sharedMaterial.color = Color.white;
+                    bait.currState = Bait.BaitState.Released;
+                    captureFish = false;
+                    isMarkerSet = false;
+                    marker.SetActive(true);
+                    bait.gameObject.SetActive(false);
                     // Captured Fish!!
                 }
                 else if (reel_INTERVAL > caught_INTERVAL)
                 {
                     reel_ticks = 0;
                     bait.caughtFish.gotReleased();
+                    baitMeshRenderer.sharedMaterial.color = Color.white;
                     bait.currState = Bait.BaitState.Cast;
                     // Lost Fish!!
                 }
             }
+            else
+            {
+                baitMeshRenderer.sharedMaterial.color = Color.white;
+            }
         }
 
-        if (bait.currState == Bait.BaitState.Succeed)
-        {
-            bait.currState = Bait.BaitState.Released;
-            isMarkerSet = false;
-            marker.SetActive(true);
-            bait.gameObject.SetActive(false);
-        }
+        //if (bait.currState == Bait.BaitState.Succeed)
+        //{
+        //    bait.currState = Bait.BaitState.Released;
+        //    captureFish = false;
+        //    isMarkerSet = false;
+        //    marker.SetActive(true);
+        //    bait.gameObject.SetActive(false);
+        //}
     }
 
     public void CastBaitGesture()
@@ -166,14 +181,12 @@ public class Rod : MonoBehaviour
                 }
                 else if (!isMarkerSet)
                 {
-                    Color redColor = new Color(1.0f, 0.0f, 0.0f, 0.5f);
-                    meshRenderer.sharedMaterial.color = redColor;
+                    markerMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
                     marker.transform.position = hit.point;
                 }
                 else
                 {
-                    Color greenColor = new Color(0.0f, 1.0f, 0.0f, 0.5f);
-                    meshRenderer.sharedMaterial.color = greenColor;
+                    markerMeshRenderer.sharedMaterial.color = new Color(0.0f, 1.0f, 0.0f, 0.5f);
                 }
             }
         }
