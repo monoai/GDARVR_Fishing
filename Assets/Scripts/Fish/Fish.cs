@@ -25,8 +25,9 @@ public class Fish : MonoBehaviour
     [SerializeField] private FishType currType;
     [SerializeField] private bool isCaught = false;
     [SerializeField] private float interest = 0.0f;
-    [SerializeField] private float speed = 1.0f;
+    [SerializeField] private float speed = 0.25f;
     private Vector3 destination = new Vector3(0.0f,0.0f,0.0f);
+    private GameObject referenceSphere;
 
     [Header("Fish Information")]
     [SerializeField] private int fishValue = 0;
@@ -67,6 +68,11 @@ public class Fish : MonoBehaviour
         model = Instantiate(model, this.transform);
         model.name = "Model";
         Destroy(tempModel);
+    }
+
+    void Awake()
+    {
+        referenceSphere = GameObject.FindGameObjectWithTag("Reference");
     }
 
     // Update is called once per frame
@@ -126,25 +132,23 @@ public class Fish : MonoBehaviour
                 Debug.Log(this.name + "is just hanging around");
                 // Random move Behavior
                 move(destination);
-
-                // Old remnant that might be useful for the pond
-                //Vector3 pos = new Vector3(1.0f, 1.0f, 0.0f);
-                //transform.position += pos; position of the pond if needed
-                //transform.position = (Random.insideUnitCircle * 5.0f);
-                //transform.position = new Vector3(transform.position.x, 0.0f, transform.position.y);
             }
         }
-        Debug.Log(this.name + "'s distance to bait is " + Vector3.Distance(bait.transform.position, transform.position));
+        //Debug.Log(this.name + "'s distance to bait is " + Vector3.Distance(bait.transform.position, transform.position));
     }
 
     private void move(Vector3 target) {
-        Vector3 rotDir = Vector3.RotateTowards(transform.forward, target - transform.position, Time.deltaTime * this.speed * 2.5f, 0.0f);
+        Vector3 rotDir = Vector3.RotateTowards(transform.forward, target - transform.position, Time.deltaTime * 4.0f, 0.0f);
         //Debug.DrawRay(transform.position, rotDir, Color.red);
         transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * this.speed);
         transform.rotation = Quaternion.LookRotation(rotDir);
     }
     private void changeDestination() {
-        destination = Random.insideUnitCircle * 5.0f;
+        destination = Random.insideUnitCircle * 1.5f;
+        if (referenceSphere != null)
+        {
+            destination += referenceSphere.transform.position;
+        }
         destination = new Vector3(destination.x, 0.0f, destination.y);
     }
 

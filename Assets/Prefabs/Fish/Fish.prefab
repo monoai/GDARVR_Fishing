@@ -53,7 +53,8 @@ MonoBehaviour:
   currType: 0
   isCaught: 0
   interest: 0
-  speed: 1
+  speed: 0.25
+  fishValue: 0
   bait: {fileID: 0}
 --- !u!135 &79360109123100652
 SphereCollider:
