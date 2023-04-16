@@ -20,6 +20,7 @@ public class ThrowReelHandler : MonoBehaviour
         }
 
         float distance = Vector3.Distance(prevAccel, Input.acceleration);
+        Debug.Log(distance);
 
         if (Mathf.Abs(distance) >= distanceThreshold)
         {

@@ -9,6 +9,7 @@ public class MenuHandler : MonoBehaviour
     [SerializeField] private GameObject album;
     [SerializeField] private GameObject scanMessage;
     [SerializeField] private GameObject pondOne;
+    [SerializeField] private GameObject fishingRod;
     [SerializeField] private GameObject ThrowReelHandler;
 
     bool inPond = false;
@@ -20,12 +21,14 @@ public class MenuHandler : MonoBehaviour
         album.SetActive(false);
         ThrowReelHandler.SetActive(false);
         scanMessage.SetActive(false);
+        fishingRod.SetActive(false);
     }
 
     public void OnPlay()
     {
         menu.SetActive(false);
         scanMessage.SetActive(true);
+        fishingRod.SetActive(true);
         inPond = true;
     }
 

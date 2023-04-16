@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Rod : MonoBehaviour
 {
-    public GameObject marker;
-    public GameObject baitRef;
+    [SerializeField] private ThrowReelHandler rodHandler;
+    [SerializeField] private GameObject baitRef;
     public GameObject bait;
+    public GameObject marker;
 
-    public MeshRenderer meshRenderer;
     public bool isMarkerNull = true;
     public bool isMarkerSet = false;
     public bool isBaitCast = false;
+
+    MeshRenderer meshRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +25,28 @@ public class Rod : MonoBehaviour
     void Update()
     {
         SetMarkerLocation();
+        SetMarkerGesture();
+        //CastBaitGesture();
     }
 
-    public void CastBait()
+    public void CastBaitGesture()
+    {
+        if (bait != null && rodHandler.isReeled)
+        {
+            Destroy(bait);
+            marker.SetActive(true);
+            isBaitCast = false;
+            isMarkerSet = false;
+        }
+        else if (isMarkerSet && !isBaitCast && rodHandler.isThrown)
+        {
+            bait = Instantiate(baitRef, marker.transform.position, Quaternion.identity);
+            marker.SetActive(false);
+            isBaitCast = true;
+        }
+    }
+
+    public void CastBaitButton()
     {
         if (bait != null)
         {
@@ -40,7 +61,30 @@ public class Rod : MonoBehaviour
             marker.SetActive(false);
             isBaitCast = true;
         }
-        
+    }
+
+    public void SetMarkerGesture()
+    {
+        if (Input.touchCount > 0)
+        {
+            Debug.Log("Screen touched.");
+            if (!isMarkerNull && !isBaitCast)
+            {
+                isMarkerSet = true;
+            }
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            Debug.Log("RMB pressed.");
+            if (!isMarkerNull && !isBaitCast)
+            {
+                isMarkerSet = true;
+            }
+        }
+        else
+        {
+            isMarkerSet = false;
+        }
     }
 
     public void SetMarker()
