@@ -12,6 +12,7 @@ public class FishingRod : MonoBehaviour
     public GameObject reelButton;
     public bool isLocationSet = false;
     public bool isCast = false;
+    public bool baitExists = false;
 
     public void OnInteractiveHitTest(HitTestResult result)
     {
@@ -33,9 +34,14 @@ public class FishingRod : MonoBehaviour
         {
             if (isLocationSet) // marker location has been set
             {
+                Debug.Log("LOCATION SET");
+                castButton.SetActive(true);
                 if (isCast) // confirmation to cast bait at marker location
                 {
-                    CastBait();
+                    if (!baitExists)
+                    {
+                        reference = Instantiate(reference, result.Position, Quaternion.identity);
+                    }
                     setMarkerButton.SetActive(false);
                     reelButton.SetActive(true);
                 }
@@ -47,16 +53,12 @@ public class FishingRod : MonoBehaviour
             }
             else
             {
+                castButton.SetActive(false);
                 reference.PositionContentAtPlaneAnchor(result);
             }
         }
     }
 
-
-    public void CastBait()
-    {
-
-    }
 
     public void SetMarkerLocation()
     {
