@@ -16,7 +16,7 @@ public class Rod : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-         meshRenderer = marker.GetComponent<MeshRenderer>();
+        meshRenderer = marker.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -72,12 +72,14 @@ public class Rod : MonoBehaviour
                 }
                 else if (!isMarkerSet)
                 {
-                    meshRenderer.sharedMaterial.color = Color.red;
+                    Color redColor = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+                    meshRenderer.sharedMaterial.color = redColor;
                     marker.transform.position = hit.point;
                 }
                 else
                 {
-                    meshRenderer.sharedMaterial.color = Color.green;
+                    Color greenColor = new Color(0.0f, 1.0f, 0.0f, 0.5f);
+                    meshRenderer.sharedMaterial.color = greenColor;
                 }
             }
         }
