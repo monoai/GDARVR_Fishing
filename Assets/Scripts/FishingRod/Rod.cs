@@ -10,6 +10,14 @@ public class Rod : MonoBehaviour
 
     public bool isMarkerNull = true;
     public bool isMarkerSet = false;
+    bool captureFish = false;
+
+
+    private float caught_ticks = 0;
+    private float reel_ticks = 0;
+
+    private float caught_INTERVAL = 5.0f;
+    private float reel_INTERVAL = 3.0f;
 
     MeshRenderer meshRenderer;
 
@@ -27,13 +35,41 @@ public class Rod : MonoBehaviour
         ConfirmMarkerLocation();
         //CastBaitGesture();
 
-        if (bait.currState == Bait.BaitState.Cast)
+        if (bait.currState == Bait.BaitState.FishCaught)
         {
-            if (bait.currState == Bait.BaitState.FishCaught)
+            caught_ticks += Time.deltaTime;
+            if (caught_ticks > caught_INTERVAL)
             {
-                isMarkerSet = false;
-                marker.SetActive(true);
+                caught_ticks = 0;
+                bait.caughtFish.gotReleased();
+                bait.currState = Bait.BaitState.Cast;
+                // Lost Fish!!
             }
+
+            if (Input.GetMouseButton(1))
+            {
+                reel_ticks += Time.deltaTime;
+                if (captureFish)
+                {
+                    bait.currState = Bait.BaitState.Succeed;
+                    // Captured Fish!!
+                }
+                else if (reel_INTERVAL > caught_INTERVAL)
+                {
+                    reel_ticks = 0;
+                    bait.caughtFish.gotReleased();
+                    bait.currState = Bait.BaitState.Cast;
+                    // Lost Fish!!
+                }
+            }
+        }
+
+        if (bait.currState == Bait.BaitState.Succeed)
+        {
+            bait.currState = Bait.BaitState.Released;
+            isMarkerSet = false;
+            marker.SetActive(true);
+            bait.gameObject.SetActive(false);
         }
     }
 
@@ -70,6 +106,10 @@ public class Rod : MonoBehaviour
             bait.gameObject.transform.position = marker.transform.position;
             bait.gameObject.SetActive(true);
             marker.SetActive(false);
+        }
+        else if (bait.currState == Bait.BaitState.FishCaught)
+        {
+            captureFish = true;
         }
     }
 
