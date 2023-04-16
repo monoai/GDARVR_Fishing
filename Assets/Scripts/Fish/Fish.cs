@@ -26,6 +26,9 @@ public class Fish : MonoBehaviour
     [SerializeField] private float interest = 0.0f;
     [SerializeField] private float speed = 1.0f;
 
+    [Header("Fish Information")]
+    [SerializeField] private int fishValue = 0;
+
     [Header("References/Sensors")]
     // NOTE: Temporarily, fishes are directly assigned with the bait reference
     // Ideally fish spawning on start should try to find the bait so they could get a reference
@@ -48,12 +51,15 @@ public class Fish : MonoBehaviour
         switch (currType) {
             case FishType.Tuna:
                 model = tunaModel;
+                fishValue = 5;
                 break;
             case FishType.Gold:
                 model = goldModel;
+                fishValue = 25;
                 break;
             default:
                 model = normalModel;
+                fishValue = 1;
                 break;
         }
         model = Instantiate(model, this.transform);
