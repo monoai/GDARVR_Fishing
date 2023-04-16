@@ -61,4 +61,6 @@ crashlytics-build.properties
 # Custom
 .vsconfig
 UserSettings/
+Nuget/*
+omnisharp.json
 
