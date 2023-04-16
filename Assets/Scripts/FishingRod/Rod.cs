@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Rod : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class Rod : MonoBehaviour
 
     private float caught_INTERVAL = 5.0f;
     private float reel_INTERVAL = 3.0f;
+
+    public TMP_Text fishCountText;
+    private int fishCount = 0;
 
     MeshRenderer markerMeshRenderer;
     MeshRenderer baitMeshRenderer;
@@ -61,6 +65,9 @@ public class Rod : MonoBehaviour
                     isMarkerSet = false;
                     marker.SetActive(true);
                     bait.gameObject.SetActive(false);
+                    Destroy(bait.caughtFish.gameObject);
+                    fishCount++;
+                    fishCountText.text = "Fish count: " + fishCount;
                     // Captured Fish!!
                 }
                 else if (reel_INTERVAL > caught_INTERVAL)
@@ -88,23 +95,23 @@ public class Rod : MonoBehaviour
         //}
     }
 
-    public void CastBaitGesture()
-    {
-        if (bait.currState == Bait.BaitState.Cast)
-        {
-            bait.currState = Bait.BaitState.Released;
-            isMarkerSet = false;
-            marker.SetActive(true);
-            bait.gameObject.SetActive(false);
-        }
-        else if (isMarkerSet && bait.currState == Bait.BaitState.Released && rodHandler.isThrown)
-        {
-            bait.currState = Bait.BaitState.Cast;
-            bait.gameObject.transform.position = marker.transform.position;
-            bait.gameObject.SetActive(true);
-            marker.SetActive(false);
-        }
-    }
+    //public void CastBaitGesture()
+    //{
+    //    if (bait.currState == Bait.BaitState.Cast)
+    //    {
+    //        bait.currState = Bait.BaitState.Released;
+    //        isMarkerSet = false;
+    //        marker.SetActive(true);
+    //        bait.gameObject.SetActive(false);
+    //    }
+    //    else if (isMarkerSet && bait.currState == Bait.BaitState.Released && rodHandler.isThrown)
+    //    {
+    //        bait.currState = Bait.BaitState.Cast;
+    //        bait.gameObject.transform.position = marker.transform.position;
+    //        bait.gameObject.SetActive(true);
+    //        marker.SetActive(false);
+    //    }
+    //}
 
     public void CastBaitButton()
     {
@@ -152,17 +159,17 @@ public class Rod : MonoBehaviour
         }
     }
 
-    public void SetMarkerButton()
-    {
-        if (!isMarkerNull && bait.currState == Bait.BaitState.Released)
-        {
-            isMarkerSet = !isMarkerSet;
-        }
-        else
-        {
-            Debug.Log("Look for a pond first!!");
-        }
-    }
+    //public void SetMarkerButton()
+    //{
+    //    if (!isMarkerNull && bait.currState == Bait.BaitState.Released)
+    //    {
+    //        isMarkerSet = !isMarkerSet;
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Look for a pond first!!");
+    //    }
+    //}
 
     private void UpdateMarkerLocation()
     {
@@ -190,10 +197,5 @@ public class Rod : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void CatchFish()
-    {
-        bait.currState = Bait.BaitState.FishCaught;
     }
 }
