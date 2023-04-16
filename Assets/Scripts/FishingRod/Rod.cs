@@ -5,14 +5,11 @@ using UnityEngine;
 public class Rod : MonoBehaviour
 {
     [SerializeField] private ThrowReelHandler rodHandler;
-    [SerializeField] private GameObject baitRef;
-    public GameObject bait;
+    [SerializeField] private Bait bait;
     public GameObject marker;
-    public Transform WaterPlane;
 
     public bool isMarkerNull = true;
     public bool isMarkerSet = false;
-    public bool isBaitCast = false;
 
     MeshRenderer meshRenderer;
 
@@ -20,58 +17,68 @@ public class Rod : MonoBehaviour
     void Start()
     {
         meshRenderer = marker.GetComponent<MeshRenderer>();
+        bait.currState = Bait.BaitState.Released;
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetMarkerLocation();
-        SetMarkerGesture();
+        UpdateMarkerLocation();
+        ConfirmMarkerLocation();
         //CastBaitGesture();
+
+        if (bait.currState == Bait.BaitState.Cast)
+        {
+            if (bait.currState == Bait.BaitState.FishCaught)
+            {
+                isMarkerSet = false;
+                marker.SetActive(true);
+            }
+        }
     }
 
     public void CastBaitGesture()
     {
-        if (bait != null && rodHandler.isReeled)
+        if (bait.currState == Bait.BaitState.Cast)
         {
-            Destroy(bait);
-            marker.SetActive(true);
-            isBaitCast = false;
+            bait.currState = Bait.BaitState.Released;
             isMarkerSet = false;
+            marker.SetActive(true);
+            bait.gameObject.SetActive(false);
         }
-        else if (isMarkerSet && !isBaitCast && rodHandler.isThrown)
+        else if (isMarkerSet && bait.currState == Bait.BaitState.Released && rodHandler.isThrown)
         {
-            bait = Instantiate(baitRef, marker.transform.position, Quaternion.identity);
-            
+            bait.currState = Bait.BaitState.Cast;
+            bait.gameObject.transform.position = marker.transform.position;
+            bait.gameObject.SetActive(true);
             marker.SetActive(false);
-            isBaitCast = true;
         }
     }
 
     public void CastBaitButton()
     {
-        if (bait != null)
+        if (bait.currState == Bait.BaitState.Cast)
         {
-            Destroy(bait);
+            bait.currState = Bait.BaitState.Released;
             marker.SetActive(true);
-            isBaitCast = false;
-            isMarkerSet = false;
+            bait.gameObject.SetActive(false);
         }
-        else if (isMarkerSet && !isBaitCast)
+        else if (isMarkerSet && bait.currState == Bait.BaitState.Released)
         {
-            bait = Instantiate(baitRef, marker.transform.position, Quaternion.identity);
-            bait.transform.SetParent(WaterPlane);
+            Debug.Log("CASTING BAIT!!!");
+            bait.currState = Bait.BaitState.Cast;
+            bait.gameObject.transform.position = marker.transform.position;
+            bait.gameObject.SetActive(true);
             marker.SetActive(false);
-            isBaitCast = true;
         }
     }
 
-    public void SetMarkerGesture()
+    public void ConfirmMarkerLocation()
     {
         if (Input.touchCount > 0)
         {
             Debug.Log("Screen touched.");
-            if (!isMarkerNull && !isBaitCast)
+            if (!isMarkerNull && bait.currState == Bait.BaitState.Released)
             {
                 isMarkerSet = true;
             }
@@ -79,7 +86,7 @@ public class Rod : MonoBehaviour
         else if (Input.GetMouseButton(1))
         {
             Debug.Log("RMB pressed.");
-            if (!isMarkerNull && !isBaitCast)
+            if (!isMarkerNull && bait.currState == Bait.BaitState.Released)
             {
                 isMarkerSet = true;
             }
@@ -90,9 +97,9 @@ public class Rod : MonoBehaviour
         }
     }
 
-    public void SetMarker()
+    public void SetMarkerButton()
     {
-        if (!isMarkerNull && !isBaitCast)
+        if (!isMarkerNull && bait.currState == Bait.BaitState.Released)
         {
             isMarkerSet = !isMarkerSet;
         }
@@ -102,7 +109,7 @@ public class Rod : MonoBehaviour
         }
     }
 
-    private void SetMarkerLocation()
+    private void UpdateMarkerLocation()
     {
         Ray r = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
         Debug.DrawRay(r.origin, r.direction * 10f, Color.red);
@@ -130,5 +137,10 @@ public class Rod : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CatchFish()
+    {
+        bait.currState = Bait.BaitState.FishCaught;
     }
 }
