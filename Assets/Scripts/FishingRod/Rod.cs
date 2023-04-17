@@ -55,7 +55,7 @@ public class Rod : MonoBehaviour
                 // Lost Fish!!
             }
 
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) || Input.touchCount > 0 || rodHandler.isReeled)
             {
                 reel_ticks += Time.deltaTime;
                 baitMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
@@ -65,13 +65,13 @@ public class Rod : MonoBehaviour
                     {
                         case 5:
                             menuHandler.GetComponent<MenuHandler>().TunaIsCaught();
-                            return;
+                            break;
                         case 25:
                             menuHandler.GetComponent<MenuHandler>().GoldenIsCaught();
-                            return;
+                            break;
                         default:
                             menuHandler.GetComponent<MenuHandler>().NormalIsCaught();
-                            return;
+                            break;
 
                     }
 
@@ -84,6 +84,8 @@ public class Rod : MonoBehaviour
                     Destroy(bait.caughtFish.gameObject);
                     fishCount++;
                     fishCountText.text = "Fish count: " + fishCount;
+
+                    rodHandler.isReeled = false;
                     // Captured Fish!!
                 }
                 else if (reel_INTERVAL > caught_INTERVAL)

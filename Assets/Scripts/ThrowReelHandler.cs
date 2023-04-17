@@ -24,16 +24,7 @@ public class ThrowReelHandler : MonoBehaviour
 
         if (Mathf.Abs(distance) >= distanceThreshold)
         {
-            if (!isThrown)
-            {
-                isThrown = true;
-                isReeled = false;
-            }
-            else
-            {
-                isThrown = false;
-                isReeled = true;
-            }
+            isReeled = true;
         }
 
         prevAccel = Input.acceleration;
