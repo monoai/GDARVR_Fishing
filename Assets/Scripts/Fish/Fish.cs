@@ -173,4 +173,9 @@ public class Fish : MonoBehaviour
         isScared = true;
         interest -= 50.0f;
     }
+
+    public int FishValueReference()
+    {
+        return this.fishValue;
+    }
 }

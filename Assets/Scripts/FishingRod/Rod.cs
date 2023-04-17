@@ -25,6 +25,8 @@ public class Rod : MonoBehaviour
     MeshRenderer markerMeshRenderer;
     MeshRenderer baitMeshRenderer;
 
+    [SerializeField] private GameObject menuHandler;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +61,20 @@ public class Rod : MonoBehaviour
                 baitMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
                 if (captureFish)
                 {
+                    switch(bait.caughtFish.FishValueReference())
+                    {
+                        case 5:
+                            menuHandler.GetComponent<MenuHandler>().TunaIsCaught();
+                            return;
+                        case 25:
+                            menuHandler.GetComponent<MenuHandler>().GoldenIsCaught();
+                            return;
+                        default:
+                            menuHandler.GetComponent<MenuHandler>().NormalIsCaught();
+                            return;
+
+                    }
+
                     baitMeshRenderer.sharedMaterial.color = Color.white;
                     bait.currState = Bait.BaitState.Released;
                     captureFish = false;

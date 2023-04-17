@@ -75161,6 +75161,9 @@ MonoBehaviour:
   pondOne: {fileID: 156352220}
   fishingRod: {fileID: 371119958}
   ThrowReelHandler: {fileID: 1525978002}
+  normalFish: {fileID: 430574525}
+  goldenFish: {fileID: 780437224}
+  tunaFish: {fileID: 820560321}
 --- !u!114 &1303839877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80509,7 +80512,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh179850
+  m_Name: pb_Mesh26462
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -96232,6 +96235,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1525978003}
     - target: {fileID: 4246100031955195376, guid: 09113674b7dcb00489eb29279705f4a1, type: 3}
+      propertyPath: menuHandler
+      value: 
+      objectReference: {fileID: 1303839874}
+    - target: {fileID: 4246100031955195376, guid: 09113674b7dcb00489eb29279705f4a1, type: 3}
       propertyPath: fishCountText
       value: 
       objectReference: {fileID: 444623843}
@@ -111397,7 +111404,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh178292
+  m_Name: pb_Mesh24890
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
