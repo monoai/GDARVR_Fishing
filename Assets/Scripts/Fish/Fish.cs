@@ -53,6 +53,9 @@ public class Fish : MonoBehaviour
         // We assume that the type and data is only initialized once
         // Any values that should be overriden based on type will be done here
         GameObject model = normalModel;
+
+        currType = (FishType)Random.Range(0, 2);
+
         switch (currType) {
             case FishType.Tuna:
                 model = tunaModel;
@@ -172,5 +175,10 @@ public class Fish : MonoBehaviour
         isCaught = false;
         isScared = true;
         interest -= 50.0f;
+    }
+
+    public int FishValueReference()
+    {
+        return this.fishValue;
     }
 }

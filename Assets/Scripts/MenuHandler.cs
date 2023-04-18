@@ -12,8 +12,34 @@ public class MenuHandler : MonoBehaviour
     [SerializeField] private GameObject fishingRod;
     [SerializeField] private GameObject ThrowReelHandler;
 
+    [SerializeField] private GameObject normalFish;
+    [SerializeField] private GameObject goldenFish;
+    [SerializeField] private GameObject tunaFish;
+
+    // FISH ALBUM VALUES //
+    bool tunaCaught = false;
+    bool goldenCaught = false;
+    bool normalCaught = false;
+
     bool inPond = false;
 
+    // SETTER FUNCTIONS //
+    public void TunaIsCaught()
+    {
+        this.tunaCaught = true;
+    }
+
+    public void GoldenIsCaught()
+    {
+        this.goldenCaught = true;
+    }
+
+    public void NormalIsCaught()
+    {
+        this.normalCaught = true;
+    }
+
+    // INITIALIZE ON APP STARTUP//
     void Start()
     {
         menu.SetActive(true);
@@ -36,6 +62,10 @@ public class MenuHandler : MonoBehaviour
     {
         menu.SetActive(false);
         album.SetActive(true);
+
+        normalFish.SetActive(normalCaught);
+        tunaFish.SetActive(tunaCaught);
+        goldenFish.SetActive(goldenCaught);
     }
 
     public void OnBackFromAlbum()
@@ -48,6 +78,7 @@ public class MenuHandler : MonoBehaviour
     {
         pondUI.SetActive(false);
         pondOne.SetActive(false);
+        scanMessage.SetActive(false);
         ThrowReelHandler.SetActive(false);
 
         menu.SetActive(true);

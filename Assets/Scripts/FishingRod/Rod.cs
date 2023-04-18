@@ -25,6 +25,8 @@ public class Rod : MonoBehaviour
     MeshRenderer markerMeshRenderer;
     MeshRenderer baitMeshRenderer;
 
+    [SerializeField] private GameObject menuHandler;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,12 +55,27 @@ public class Rod : MonoBehaviour
                 // Lost Fish!!
             }
 
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) || Input.touchCount > 0 || rodHandler.isReeled == true)
             {
                 reel_ticks += Time.deltaTime;
                 baitMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
+
                 if (captureFish)
                 {
+                    switch(bait.caughtFish.FishValueReference())
+                    {
+                        case 5:
+                            menuHandler.GetComponent<MenuHandler>().TunaIsCaught();
+                            break;
+                        case 25:
+                            menuHandler.GetComponent<MenuHandler>().GoldenIsCaught();
+                            break;
+                        default:
+                            menuHandler.GetComponent<MenuHandler>().NormalIsCaught();
+                            break;
+
+                    }
+
                     baitMeshRenderer.sharedMaterial.color = Color.white;
                     bait.currState = Bait.BaitState.Released;
                     captureFish = false;
@@ -68,6 +85,8 @@ public class Rod : MonoBehaviour
                     Destroy(bait.caughtFish.gameObject);
                     fishCount++;
                     fishCountText.text = "Fish count: " + fishCount;
+
+                    rodHandler.isReeled = false;
                     // Captured Fish!!
                 }
                 else if (reel_INTERVAL > caught_INTERVAL)
