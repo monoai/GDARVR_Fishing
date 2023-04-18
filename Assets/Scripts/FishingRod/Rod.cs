@@ -55,10 +55,11 @@ public class Rod : MonoBehaviour
                 // Lost Fish!!
             }
 
-            if (Input.GetMouseButton(1) || Input.touchCount > 0 || rodHandler.isReeled)
+            if (Input.GetMouseButton(1) || Input.touchCount > 0 || rodHandler.isReeled == true)
             {
                 reel_ticks += Time.deltaTime;
                 baitMeshRenderer.sharedMaterial.color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
+
                 if (captureFish)
                 {
                     switch(bait.caughtFish.FishValueReference())
