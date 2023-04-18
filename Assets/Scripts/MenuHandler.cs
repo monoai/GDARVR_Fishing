@@ -78,6 +78,7 @@ public class MenuHandler : MonoBehaviour
     {
         pondUI.SetActive(false);
         pondOne.SetActive(false);
+        scanMessage.SetActive(false);
         ThrowReelHandler.SetActive(false);
 
         menu.SetActive(true);
